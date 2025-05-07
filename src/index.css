@@ -1,68 +1,352 @@
+@charset "UTF-8";
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+	font-family: "Noto Sans JP", "Segoe UI", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", meiryo, sans-serif;
+	line-height: 1.5;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+	/* プリミティブカラー */
+	--white: #ffffff;
+	--black: #000000;
+	/* 対白字コントラスト比確保限界：blue120（4.63:1） */
+	--blue-200: #081118;
+	--blue-190: #0C1B26;
+	--blue-180: #112434;
+	--blue-170: #152E41;
+	--blue-160: #1A374F;
+	--blue-150: #1E415D;
+	--blue-140: #224B6A;
+	--blue-130: #275478;
+	--blue-120: #2B5E86;
+	--blue-110: #306793;
+	--blue-100: #3471A1;
+	--blue-090: #407EAE;
+	--blue-080: #4E8ABA;
+	--blue-070: #5C97C5;
+	--blue-060: #6BA3CF;
+	--blue-050: #7BAFD9;
+	--blue-040: #8CBBE1;
+	--blue-030: #9DC7E8;
+	--blue-020: #B0D3EF;
+	--blue-010: #C4DFF4;
+	--blue-000: #D9EBF9;
+	/* 対白字コントラスト比確保限界：red150（5.28:1） */
+	--red-200: #1E0C0C;
+	--red-190: #2E1212;
+	--red-180: #3F1919;
+	--red-170: #502020;
+	--red-160: #612626;
+	--red-150: #712D2D;
+	--red-140: #823434;
+	--red-130: #933A3A;
+	--red-120: #A44141;
+	--red-110: #B44747;
+	--red-100: #C54E4E;
+	--red-090: #CF5858;
+	--red-080: #D96262;
+	--red-070: #E16E6E;
+	--red-060: #E87B7B;
+	--red-050: #EF8888;
+	--red-040: #F49797;
+	--red-030: #F8A6A6;
+	--red-020: #FCB7B7;
+	--red-010: #FEC9C9;
+	--red-000: #FFDCDC;
+	/* 対白字コントラスト比確保限界：grey140（4.99:1） */
+	--grey-200: #121212;
+	--grey-190: #1C1C1C;
+	--grey-180: #262626;
+	--grey-170: #303030;
+	--grey-160: #3A3A3A;
+	--grey-150: #444444;
+	--grey-140: #4E4E4E;
+	--grey-130: #585858;
+	--grey-120: #626262;
+	--grey-110: #6C6C6C;
+	--grey-100: #767676;
+	--grey-090: #828282;
+	--grey-080: #8D8D8D;
+	--grey-070: #999999;
+	--grey-060: #A5A5A5;
+	--grey-050: #B0B0B0;
+	--grey-040: #BCBCBC;
+	--grey-030: #C8C8C8;
+	--grey-020: #D3D3D3;
+	--grey-010: #DFDFDF;
+	--grey-000: #EAEAEA;
+	/* 対白字コントラスト比確保限界：green080（4.76:1） */
+	--green-200: #001600;
+	--green-190: #002200;
+	--green-180: #002E00;
+	--green-170: #003A00;
+	--green-160: #004700;
+	--green-150: #005300;
+	--green-140: #005F00;
+	--green-130: #006B00;
+	--green-120: #007800;
+	--green-110: #008400;
+	--green-100: #009000;
+	--green-090: #16A016;
+	--green-080: #2BAF2B;
+	--green-070: #41BC41;
+	--green-060: #57C957;
+	--green-050: #6CD46C;
+	--green-040: #82DE82;
+	--green-030: #98E798;
+	--green-020: #ADEEAD;
+	--green-010: #C3F4C3;
+	--green-000: #D9F9D9;
+	/* 対白字コントラスト比確保限界：bronw120（4.95:1） */
+	--brown-200: #170F03;
+	--brown-190: #241805;
+	--brown-180: #312007;
+	--brown-170: #3E2909;
+	--brown-160: #4B320A;
+	--brown-150: #583A0C;
+	--brown-140: #65430E;
+	--brown-130: #724B10;
+	--brown-120: #7F5411;
+	--brown-110: #8C5C13;
+	--brown-100: #996515;
+	--brown-090: #A87323;
+	--brown-080: #B58232;
+	--brown-070: #C28F42;
+	--brown-060: #CD9D57;
+	--brown-050: #D7AB6C;
+	--brown-040: #E0B882;
+	--brown-030: #E8C598;
+	--brown-020: #EFD1AD;
+	--brown-010: #F5DEC3;
+	--brown-000: #FAEAD9;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+	/* セマンティックカラー（ライトモード） */
+	--sc_txt_body: var(--grey-200);
+	--sc_txt_body__small: var(--black);
+	--sc_txt_desc: var(--grey-150);
+	--sc_txt_placeholder: var(--grey-140);
+	--sc_txt_onFill: var(--white);
+	--sc_txt_link: var(--blue-150);
+	--sc_txt_link__hover: var(--blue-170);
+	--sc_txt_link__active: var(--blue-170);
+	--sc_txt_link__visited: var(--blue-170);
+	--sc_txt_alert: var(--red-150);
+	--sc_txt_disabled: var(--grey-100);
+	--sc_txt_btn__primary: var(--white);
+	--sc_txt_btn__secondary: var(--blue-140);
+	--sc_border_field: 1px solid var(--grey-150);
+	--sc_border_divider: 1px solid var(--grey-050);
+	--sc_border_focused: 2px solid var(--brown-050);
+	--sc_border_selected: 2px solid var(--blue-140);
+	--sc_border_disabled: 1px solid var(--grey-060);
+	--sc_border_alert: 2px solid var(--red-140);
+	--sc_bg_body__primary: var(--grey-000);
+	--sc_bg_body__secondary: var(--grey-010);
+	--sc_bg_body__tertiary: var(--grey-100);
+	--sc_bg_btn__primary: var(--blue-150);
+	--sc_bg_btn__secondary: var(--blue-000);
+	--sc_bg_disabled: var(--grey-100);
+	--sc_bg_alert: var(--red-110);
+	--sc_bg_shadow: var(--grey-200);
+	--sc_bg_blockHeading: var(--grey-010);
+	--sc_bg_blockParagraph: var(--grey-000);
+	--sc_bg_blockBlockquote: var(--grey-020);
+	--sc_bg_blockOrderedList: var(--green-000);
+	--sc_bg_blockUnorderedList: var(--brown-000);
+	--sc_bg_blockHorizontalRule: var(--red-000);
+	--sc_bg_blockCode: var(--blue-000);
+}
+
+/* セマンティックカラー（手動：ライトモード時） */
+:root.is_lightMode {
+	--sc_txt_body: var(--grey-200);
+	--sc_txt_body__small: var(--black);
+	--sc_txt_desc: var(--grey-150);
+	--sc_txt_placeholder: var(--grey-140);
+	--sc_txt_onFill: var(--white);
+	--sc_txt_link: var(--blue-150);
+	--sc_txt_link__hover: var(--blue-170);
+	--sc_txt_link__active: var(--blue-170);
+	--sc_txt_link__visited: var(--blue-170);
+	--sc_txt_alert: var(--red-150);
+	--sc_txt_disabled: var(--grey-100);
+	--sc_txt_btn__primary: var(--white);
+	--sc_txt_btn__secondary: var(--blue-140);
+	--sc_border_field: 1px solid var(--grey-150);
+	--sc_border_divider: 1px solid var(--grey-050);
+	--sc_border_focused: 2px solid var(--brown-050);
+	--sc_border_selected: 2px solid var(--blue-140);
+	--sc_border_disabled: 1px solid var(--grey-060);
+	--sc_border_alert: 2px solid var(--red-140);
+	--sc_bg_body__primary: var(--grey-000);
+	--sc_bg_body__secondary: var(--grey-010);
+	--sc_bg_body__tertiary: var(--grey-100);
+	--sc_bg_btn__primary: var(--blue-150);
+	--sc_bg_btn__secondary: var(--blue-000);
+	--sc_bg_disabled: var(--grey-100);
+	--sc_bg_alert: var(--red-110);
+	--sc_bg_shadow: var(--grey-200);
+	--sc_bg_blockHeading: var(--grey-010);
+	--sc_bg_blockParagraph: var(--grey-000);
+	--sc_bg_blockBlockquote: var(--grey-020);
+	--sc_bg_blockOrderedList: var(--green-000);
+	--sc_bg_blockUnorderedList: var(--brown-000);
+	--sc_bg_blockHorizontalRule: var(--red-000);
+	--sc_bg_blockCode: var(--blue-000);
+}
+
+/* セマンティックカラー（ダークモード時） */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--sc_txt_body: var(--grey-000);
+		--sc_txt_body__small: var(--white);
+		--sc_txt_desc: var(--grey-050);
+		--sc_txt_placeholder: var(--grey-060);
+		--sc_txt_onFill: var(--white);
+		--sc_txt_link: var(--blue-050);
+		--sc_txt_link__hover: var(--blue-040);
+		--sc_txt_link__active: var(--blue-040);
+		--sc_txt_link__visited: var(--blue-040);
+		--sc_txt_alert: var(--red-050);
+		--sc_txt_disabled: var(--grey-100);
+		--sc_txt_btn__primary: var(--white);
+		--sc_txt_btn__secondary: var(--blue-060);
+		--sc_border_field: 1px solid var(--grey-050);
+		--sc_border_divider: 1px solid var(--grey-150);
+		--sc_border_focused: 2px solid var(--brown-150);
+		--sc_border_selected: 2px solid var(--blue-060);
+		--sc_border_disabled: 1px solid var(--grey-140);
+		--sc_border_alert: 2px solid var(--red-060);
+		--sc_bg_body__primary: var(--grey-200);
+		--sc_bg_body__secondary: var(--grey-190);
+		--sc_bg_body__tertiary: var(--grey-100);
+		--sc_bg_btn__primary: var(--blue-120);
+		--sc_bg_btn__secondary: var(--blue-200);
+		--sc_bg_disabled: var(--grey-100);
+		--sc_bg_alert: var(--red-090);
+		--sc_bg_shadow: var(--grey-000);
+		--sc_bg_blockHeading: var(--grey-190);
+		--sc_bg_blockParagraph: var(--grey-200);
+		--sc_bg_blockBlockquote: var(--grey-180);
+		--sc_bg_blockOrderedList: var(--green-200);
+		--sc_bg_blockUnorderedList: var(--brown-200);
+		--sc_bg_blockHorizontalRule: var(--red-200);
+		--sc_bg_blockCode: var(--blue-200);
+	}
+}
+
+/* セマンティックカラー（手動：ダークモード時） */
+:root.is_darkMode {
+	--sc_txt_body: var(--grey-000);
+	--sc_txt_body__small: var(--white);
+	--sc_txt_desc: var(--grey-050);
+	--sc_txt_placeholder: var(--grey-060);
+	--sc_txt_onFill: var(--white);
+	--sc_txt_link: var(--blue-050);
+	--sc_txt_link__hover: var(--blue-040);
+	--sc_txt_link__active: var(--blue-040);
+	--sc_txt_link__visited: var(--blue-040);
+	--sc_txt_alert: var(--red-050);
+	--sc_txt_disabled: var(--grey-100);
+	--sc_txt_btn__primary: var(--white);
+	--sc_txt_btn__secondary: var(--blue-060);
+	--sc_border_field: 1px solid var(--grey-050);
+	--sc_border_divider: 1px solid var(--grey-150);
+	--sc_border_focused: 2px solid var(--brown-150);
+	--sc_border_selected: 2px solid var(--blue-060);
+	--sc_border_disabled: 1px solid var(--grey-140);
+	--sc_border_alert: 2px solid var(--red-060);
+	--sc_bg_body__primary: var(--grey-200);
+	--sc_bg_body__secondary: var(--grey-190);
+	--sc_bg_body__tertiary: var(--grey-100);
+	--sc_bg_btn__primary: var(--blue-120);
+	--sc_bg_btn__secondary: var(--blue-170);
+	--sc_bg_disabled: var(--grey-100);
+	--sc_bg_alert: var(--red-090);
+	--sc_bg_shadow: var(--grey-000);
+	--sc_bg_blockHeading: var(--grey-190);
+	--sc_bg_blockParagraph: var(--grey-200);
+	--sc_bg_blockBlockquote: var(--grey-180);
+	--sc_bg_blockOrderedList: var(--green-200);
+	--sc_bg_blockUnorderedList: var(--brown-200);
+	--sc_bg_blockHorizontalRule: var(--red-200);
+	--sc_bg_blockCode: var(--blue-200);
+}
+
+
+
+/* ≡≡≡ ▀▄ ベース設定 ▀▄ ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+	■ 概要
+		ベースとなる処理を施す
+		+ セマンティックカラーの設定（基本となる要素に施し、最低限の見栄えを確保）
+		+ 不要なデフォルトのスタイルを剥ぐ
+---------------------------------------------------------------------------- */
+
+*,::after,::before {
+	box-sizing: border-box
+}
+
+body {
+  margin: auto;
+	padding: 4px;
+	background-color: var(--sc_bg_body__primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1,h2,h3,h4,h5,h6,
+li,
+th,
+td,
+div,
+span,
+code,
+pre,
+figcaption,
+caption,
+time,
+address,
+small,
+p {
+	color: var(--sc_txt_body);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+img {
+	max-width: 100%;
+}
+
+svg {
+	fill: currentcolor;
+}
+
+small {
+	font-size: 0.8em;
+}
+
+/* ダイアログ表示中は、裏側にあるページをスクロールさせない */
+html:has(dialog[open]) {
+	overflow: hidden;
+}
+
+/* フォーカス時のスタイル */
+*:focus-visible{
+	outline: var(--sc_border_focused);
+	outline-offset: 2px;
+	animation-name: focusEffect;
+	animation-duration: 0.3s;
+}
+
+@keyframes focusEffect {
+	from {
+		outline-width: 1px;
+		outline-offset: 8px;
+	}
+
+	to {
+		outline-width: 2px;
+		outline-offset: 2px;
+	}
 }

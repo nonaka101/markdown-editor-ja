@@ -1,0 +1,115 @@
+.block-controls {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: start;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	column-gap: 4px;
+}
+
+.block-controls-input {
+	display: flex;
+	flex-flow: row;
+	gap: 2px;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	margin-inline-start: 8px;
+}
+
+.block-controls-input > label {
+	display: block;
+	margin: 0;
+	font-size: 0.8rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: var(--sc_txt_body__small);
+}
+
+.level-select {
+	position: relative;
+	display: block;
+	width: calc(2ch + 24px);
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.level-select > select {
+	appearance: none;
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 4px 20px 4px 4px;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.25;
+	color: var(--sc_txt_body);
+	background-color: var(--sc_bg_body__primary);
+	border: var(--sc_border_field);
+	border-radius: 4px;
+	transition: border-color .25s, box-shadow .25s;
+	font-size: 0.8rem;
+}
+
+.level-select > svg {
+	position: absolute;
+	top: 50%;
+	right: 4px;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 16px;
+	color: var(--sc_txt_body);
+	pointer-events: none;
+}
+
+input.language-input {
+	display: block;
+	height: 100%;
+	width: calc(10ch + 8px);
+	margin: 0;
+	padding: 4px;
+	font-size: 0.8rem;
+	font-weight: 400;
+	line-height: 1.25;
+	color: var(--sc_txt_body);
+	background-color: var(--sc_bg_body__primary);
+	border: var(--sc_border_field);
+	border-radius: 2px;
+	transition: border-color .25s, box-shadow .25s;
+}
+
+.block-controls-button {
+	appearance: none;
+	display: block;
+	padding: 4px;
+	margin: 0;
+	font-size: 1rem;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 1.2;
+	text-align: center;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	background: none;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	transition: .25s;
+	color: var(--sc_txt_btn__secondary);
+	text-decoration: none;
+	background-color: transparent;
+	border-color: currentcolor;
+}
+
+.block-controls-button:hover,
+.block-controls-button:active,
+.block-controls-button:focus-visible {
+	background-color: var(--sc_bg_btn__secondary);
+}
+
+.block-controls-button:disabled {
+	pointer-events: none;
+	color: var(--sc_txt_disabled);
+}

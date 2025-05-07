@@ -1,0 +1,31 @@
+.add-block-button {
+	appearance: none;
+	display: block;
+	padding: 4px;
+	margin: 0;
+	font-size: 1rem;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 1.2;
+	text-align: center;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	background: none;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	transition: .25s;
+	color: var(--sc_txt_btn__primary);
+	text-decoration: none;
+	background-color: var(--sc_bg_btn__primary);
+}
+
+.add-block-button:disabled {
+	pointer-events: none;
+	background-color: var(--sc_bg_disabled);
+}
+
+.add-block-button:hover,
+.add-block-button:active,
+.add-block-button:focus-visible {
+	filter: brightness(87%);
+}

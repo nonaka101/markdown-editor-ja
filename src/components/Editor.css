@@ -1,0 +1,7 @@
+.editor {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	max-width: 80ch;
+	margin: 92px auto;
+}

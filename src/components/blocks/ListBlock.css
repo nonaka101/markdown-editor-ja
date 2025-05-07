@@ -1,0 +1,22 @@
+.list-block {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.2rem;
+	width: 100%;
+	margin: 0;
+	padding: 8px 4px;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	border: var(--sc_border_field);
+	border-bottom-style: none;
+	transition: border-color .25s, box-shadow .25s;
+}
+
+.list-block-title {
+	display: block;
+	margin-bottom: 0.1rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.5;
+	color: var(--sc_txt_body__small);
+}
