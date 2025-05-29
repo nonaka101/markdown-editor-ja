@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import './ListItem.css';
 
-// eslint-disable-next-line no-unused-vars
 function ListItem({ item, index, blockId, isFocused, onClearFocusedItem, onUpdate, onDelete, onMoveUp, onMoveDown, onAddItemBelow }) {
 	const inputRef = useRef(null); // input 要素への参照
 
@@ -40,7 +39,7 @@ function ListItem({ item, index, blockId, isFocused, onClearFocusedItem, onUpdat
 				type="text"
 				value={item.content}
 				onChange={handleInputChange}
-				onKeyDown={handleKeyDown} // キー入力イベントを監視
+				onKeyDown={handleKeyDown}
 				placeholder="リスト項目"
 			/>
 			{/* アイテム操作ボタン */}

@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 // ユーティリティ関数をインポート
 import { escapeHtml } from '../utils/htmlUtils';
 import { generatePreviewData } from '../utils/previewHelpers';
+import { saveJsonData } from '../utils/fileSaver';
 
 import './GlobalMenu.css';
 
+
 // sessionStorage キー
 const SETTINGS_STORAGE_KEY = 'markdownEditorSettings';
+const LOCAL_STORAGE_KEY_GM = 'markdownEditorContent'; // saveJsonData 用（App.js と同じキー）
 
 // デフォルト設定（現状はカラーモードのみ）
 const getDefaultSettings = () => ({
@@ -17,12 +20,11 @@ const getDefaultSettings = () => ({
 
 
 
-function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
-	const handleTitleChange = (event) => {
-		setTitle(event.target.value);
-	};
+function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew, onLoadJsonData }) {
 
-	const headings = blocks.filter(block => block.type === 'heading');
+  // =====================================
+  //   カラーモード関係の機能
+  // =====================================
 
 	// --- カラーモード状態管理 ---
 	const [colorMode, setColorMode] = useState(() => {
@@ -30,7 +32,7 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
 		if (savedSettings) {
 			try {
 				const parsed = JSON.parse(savedSettings);
-				// 数値であることを確認（念のため）
+				// 数値であることを確認し、カラーモードを設定
 				const mode = parseInt(parsed.colorMode, 10);
 				return !isNaN(mode) ? mode : getDefaultSettings().colorMode;
 			} catch (e) {
@@ -84,16 +86,116 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
 		setColorMode(parseInt(event.target.value, 10));
 	}, []);
 
-	// ダイアログを開閉するための関数
+
+
+
+
+  // =====================================
+  //   ダイアログの表示/非表示の機能
+  // =====================================
+
+  /** メニューダイアログの表示 */
 	const openMenuDialog = useCallback(() => {
 		const dialog = document.getElementById('global-menu');
 		if (dialog) dialog.showModal();
 	}, []);
 
+  /** メニューダイアログを閉じる */
 	const closeMenuDialog = useCallback(() => {
 		const dialog = document.getElementById('global-menu');
 		if (dialog) dialog.close();
 	}, []);
+
+  /** 見出しジャンプ用の heading 要素一覧 */
+	const headings = blocks.filter(block => block.type === 'heading');
+
+	const handleTitleChange = (event) => {
+		setTitle(event.target.value);
+	};
+
+
+
+
+
+
+
+
+
+
+
+  // =====================================
+  //   JSON 保存読込関係の機能
+  // =====================================
+
+  const fileInputRef = useRef(null); // JSONロード用のファイル入力
+  
+  // --- JSONデータからロード ---
+  const handleLoadJsonButtonClick = () => {
+      fileInputRef.current?.click(); // ファイル選択ダイアログを開く
+  };
+
+  /**
+   * JSONデータを保存するハンドラ
+   * @returns {void}
+   */
+  const handleSaveJson = useCallback(() => {
+      const jsonDataString = localStorage.getItem(LOCAL_STORAGE_KEY_GM);
+      if (jsonDataString) {
+          try {
+              const parsedData = JSON.parse(jsonDataString);
+              const filenameTitle = parsedData.title ? parsedData.title.replace(/[^a-z0-9_-\s]/gi, '').replace(/\s+/g, '_') : 'Untitled';
+              saveJsonData(jsonDataString, `MDEja-${filenameTitle}`);
+          } catch (error) {
+              console.error("localStorage のJSONデータのパースに失敗:", error);
+              alert("データの保存準備に失敗しました。localStorageの内容が破損している可能性があります。");
+          }
+      } else {
+          alert('保存するデータがlocalStorageに見つかりません。');
+      }
+      closeMenuDialog();
+  }, [closeMenuDialog]); // titleに依存しない (localStorageから直接取得するため)
+
+
+  /**
+   * JSONデータをロードするハンドラ
+   * @returns {void}
+   */
+  const handleFileSelectedForJsonLoad = useCallback((event) => {
+      const file = event.target.files?.[0];
+      if (!file) {
+          return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+          const fileContent = e.target.result;
+          if (typeof fileContent === 'string') {
+              onLoadJsonData(fileContent); // -> App.js の処理関数を呼び出す
+          } else {
+              alert('ファイル内容の読み取りに失敗しました。');
+          }
+      };
+      reader.onerror = () => {
+          console.error('ファイル読み込みエラー:', reader.error);
+          alert('ファイルの読み込み中にエラーが発生しました。');
+      };
+      reader.readAsText(file);
+
+      // 同じファイルを連続して選択できるように input の値をリセット
+      if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+      }
+      closeMenuDialog(); // メニューを閉じる
+  }, [onLoadJsonData, closeMenuDialog]);
+
+
+
+
+
+
+  // =====================================
+  //   プレビュー機能
+  // =====================================
 
   /**
    * エディタ内容を新規ページとして出力するためのハンドラ
@@ -127,7 +229,7 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
   <style>
     :root{font-family:"Noto Sans JP","Segoe UI","Hiragino Kaku Gothic ProN","BIZ UDPGothic",meiryo,sans-serif;line-height:1.5}*,::after,::before{box-sizing:border-box}
     body{margin:0;color:#1a1a1c;background-color:#f8f8fb}svg{fill:currentColor}button{appearance:none}a{color:#0024ce;text-decoration:underline;text-underline-offset:2px}a:active,a:visited,a:hover{color:#0000be}
-    p{margin-bottom:1rem}ul,ol{padding-left:2rem;margin-bottom:1rem}li{margin-bottom:.4rem}hr{border:0;border-top:2px solid #0000be;margin:2rem 0}
+    p{margin-bottom:1rem}ul,ol{padding-left:2rem;margin-top:1.5rem;margin-bottom:1.5rem}li{margin-bottom:.4rem}hr{border:0;border-top:2px solid #0000be;margin:2rem 0}
     pre{background-color:#f7f7f7;border:1px solid #ddd;padding:1rem;overflow-x:auto;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;font-size:.9rem;line-height:1.5;border-radius:3px}
     pre code{padding:0;background-color:transparent;border:none;font-size:inherit;color:inherit}code:not(pre>code){font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;background-color:#f0f0f0;padding:.2rem .4rem;border-radius:3px;font-size:.9rem}
     blockquote{border-left:4px solid #e0e0e0;padding:1rem 1.5rem;margin:1.5rem 0;background-color:#e8e8eb;color:#414143}blockquote p{margin:0 0 .5rem 0}blockquote p:last-child{margin-bottom:0}
@@ -291,13 +393,30 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
 
 					{/* 操作ボタン */}
 					<div className='menu-dialog-content'>
-						<h3>操作</h3>
-						<div className='menu-dialog-buttons'>
-							{/* 各ボタンの onClick 時、本処理＋ダイアログを閉じる処理 */}
-							<button onClick={() => { onNew(); closeMenuDialog(); }}>新規作成</button>
-							<button onClick={() => { onExport(); closeMenuDialog(); }}>クリップボードにコピー</button>
-							<button onClick={() => { onSave(); closeMenuDialog(); }}>ファイルとして保存</button>
-              <button onClick={handleOpenPreviewInNewPage}>プレビュー</button>
+						<h3>操作ツール</h3>
+						<div className='menu-dialog-content'>
+              <fieldset className='menu-dialog-buttons'>
+                <legend>操作</legend>
+                <button onClick={() => { onNew(); closeMenuDialog(); }}>新規作成</button>
+                <button onClick={handleOpenPreviewInNewPage}>プレビュー</button>
+              </fieldset>
+              <fieldset className='menu-dialog-buttons'>
+                <legend>出力</legend>
+                <button onClick={() => { onExport(); closeMenuDialog(); }}>クリップボードにコピー</button>
+                <button onClick={() => { onSave(); closeMenuDialog(); }}>ファイルに書き出し（<code>md</code>）</button>
+              </fieldset>
+              <fieldset className='menu-dialog-buttons'>
+                <legend>JSON</legend>
+                <button onClick={handleSaveJson}>編集データを保存</button>
+                <button onClick={handleLoadJsonButtonClick}>編集データを読込</button>
+                <input
+                  type="file"
+                  accept=".json,application/json"
+                  ref={fileInputRef}
+                  onChange={handleFileSelectedForJsonLoad}
+                  style={{ display: 'none' }}
+                />
+              </fieldset>
 						</div>
 					</div>
 

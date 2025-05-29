@@ -29,13 +29,41 @@ function App() {
 		const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
 		return saved ? JSON.parse(saved).blocks : getDefaultState().blocks;
 	});
-	const [focusedItemId, setFocusedItemId] = useState(null); // フォーカス対象のリスト項目ID
+
+  // フォーカス対象のリスト項目ID
+	const [focusedItemId, setFocusedItemId] = useState(null);
 
 	// --- localStorage への保存 ---
 	useEffect(() => {
 		const dataToSave = JSON.stringify({ title, blocks });
 		localStorage.setItem(LOCAL_STORAGE_KEY, dataToSave);
 	}, [title, blocks]);
+
+  // --- JSONデータロード処理 ---
+  const loadDataFromJsonString = useCallback((jsonString) => {
+    if (!jsonString) {
+      alert('読み込むデータが空です。');
+      return;
+    }
+    try {
+      const parsedData = JSON.parse(jsonString);
+      // 簡単なバリデーション (title と blocks が存在するか)
+      if (parsedData && typeof parsedData.title === 'string' && Array.isArray(parsedData.blocks)) {
+        if (window.confirm('現在の内容をファイルから読み込んだデータで上書きしてもよろしいですか？')) {
+          setTitle(parsedData.title);
+          setBlocks(parsedData.blocks);
+          // localStorage も更新 (useEffectが後で実行されるが、即時反映のためにも設定)
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsedData));
+          alert('JSONデータを正常にロードしました。');
+        }
+      } else {
+        alert('無効なJSONファイル形式です。title (文字列) と blocks (配列) プロパティが含まれている必要があります。');
+      }
+    } catch (error) {
+      console.error('JSONデータのパースまたはロードに失敗しました:', error);
+      alert('JSONファイルの読み込みに失敗しました。ファイルが正しいJSON形式であることを確認してください。');
+    }
+  }, [setTitle, setBlocks]);
 
 	// --- 初期化処理 ---
 	const initializeEditor = useCallback(() => {
@@ -101,7 +129,8 @@ function App() {
 			}
 			return block;
 		}));
-		setFocusedItemId(newItemId); // 新しく追加したアイテムにフォーカスを当てるよう設定
+    // 新しく追加したアイテムにフォーカスを当てるよう設定
+		setFocusedItemId(newItemId);
 	}, []);
 
 	const updateListItem = useCallback((blockId, itemId, content) => {
@@ -125,7 +154,6 @@ function App() {
 					const newItems = block.items.filter(item => item.id !== itemId);
 					// アイテムが0になった場合、ブロック自体を削除するなら null を返し、上位で filter(Boolean)
 					return newItems.length > 0 ? { ...block, items: newItems } : null;
-					// return { ...block, items: newItems };
 				}
 
 				const newItems = block.items.filter(item => item.id !== itemId);
@@ -186,6 +214,7 @@ function App() {
 				onExport={handleExportMarkdown}
 				onSave={handleSaveMarkdownFile}
 				onNew={initializeEditor}
+        onLoadJsonData={loadDataFromJsonString}
 			/>
 			<Editor
 				blocks={blocks}

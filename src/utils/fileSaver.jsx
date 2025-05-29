@@ -24,3 +24,39 @@ export function saveAsMarkdown(markdownContent, title) {
 	document.body.removeChild(link);
 	URL.revokeObjectURL(url);
 }
+
+
+
+/**
+ * JSONデータをファイルとして保存する関数
+ * @param {string} jsonDataString - 保存するJSONデータの文字列
+ * @param {string} baseFilename - ファイル名のベース部分 (例: "MDEja-MyDocument")
+ */
+export function saveJsonData(jsonDataString, baseFilename) {
+  if (!jsonDataString) {
+    console.error('保存するJSONデータがありません。');
+    alert('保存するデータがありません。');
+    return;
+  }
+
+  try {
+    // ファイル名を決定（baseFilename に .json が含まれていなければ追加）
+    const filename = baseFilename.endsWith('.json') ? baseFilename : `${baseFilename}.json`;
+
+    const blob = new Blob([jsonDataString], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('JSONデータの保存に失敗しました:', error);
+    alert('JSONデータの保存に失敗しました。');
+  }
+}

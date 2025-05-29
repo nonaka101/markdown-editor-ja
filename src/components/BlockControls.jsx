@@ -36,7 +36,7 @@ function BlockControls({
 							<option value={4}>4</option>
 							<option value={5}>5</option>
 						</select>
-						<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						<svg role="graphics-symbol img" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 							<path d="M12 17.1L3 8L4 7L12 15L20 7L21 8L12 17.1Z"/>
 						</svg>
 					</div>

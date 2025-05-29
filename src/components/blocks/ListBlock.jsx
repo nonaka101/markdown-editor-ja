@@ -15,13 +15,13 @@ function ListBlock({ block, focusedItemId, onClearFocusedItem, onAddListItem, on
 						item={item}
 						index={index}
 						blockId={block.id}
-						isFocused={item.id === focusedItemId} // フォーカス対象かどうかを渡す
-						onClearFocusedItem={onClearFocusedItem} // フォーカス完了通知関数を渡す
+						isFocused={item.id === focusedItemId}
+						onClearFocusedItem={onClearFocusedItem}
 						onUpdate={(content) => onUpdateListItem(block.id, item.id, content)}
 						onDelete={() => onDeleteListItem(block.id, item.id)}
 						onMoveUp={() => onMoveListItem(block.id, item.id, 'up')}
 						onMoveDown={() => onMoveListItem(block.id, item.id, 'down')}
-						onAddItemBelow={() => onAddListItem(block.id, index)} // Enter キーで次のアイテムを追加
+						onAddItemBelow={() => onAddListItem(block.id, index)}
 					/>
 				))}
 			</Tag>

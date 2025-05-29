@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'; // useState を削除し、useRef を追加
+import React, { useRef } from 'react';
 import BlockControls from './BlockControls';
 import AddBlockButton from './AddBlockButton';
 import AddBlockDialog from './AddBlockDialog';
@@ -11,7 +11,7 @@ import CodeBlock from './blocks/CodeBlock';
 import './Block.css';
 
 function Block({ block, index, focusedItemId, onClearFocusedItem, onAddBlock, onUpdateBlock, onDeleteBlock, onMoveBlock, onAddListItem, onUpdateListItem, onDeleteListItem, onMoveListItem }) {
-	const dialogRef = useRef(null); // dialog 要素への参照
+	const dialogRef = useRef(null);
 
 	// --- コンテンツ更新ハンドラ ---
 	const handleContentChange = (newContent) => onUpdateBlock(block.id, { content: newContent });
@@ -91,7 +91,7 @@ function Block({ block, index, focusedItemId, onClearFocusedItem, onAddBlock, on
 					blockId={block.id}
 					blockType={block.type}
 					level={block.level}
-					language={block.language} // コードブロックの言語表示/編集用
+					language={block.language}
 					onDelete={() => onDeleteBlock(block.id)}
 					onMoveUp={() => onMoveBlock(block.id, 'up')}
 					onMoveDown={() => onMoveBlock(block.id, 'down')}
