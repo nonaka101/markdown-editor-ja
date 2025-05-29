@@ -143,7 +143,7 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
     main h4::before{position:absolute;top:0;left:1px;display:block;width:2px;height:100%;content:'';background-color:#0000be}
     main h5{margin-top:2.5rem;margin-bottom:1rem;font-size:1rem;font-weight:500;line-height:1.7;letter-spacing:.04em;position:relative;padding-left:10px}
     main h5::before{position:absolute;top:0;left:1px;display:block;width:4px;height:100%;content:'';border:1px solid #0000be;border-radius:2px}
-    main h6{margin-top:1.5rem;margin-bottom:1rem;font-size:1rem;font-weight:400;line-height:1.7;letter-spacing:.04em}
+    main h6{margin-top:1.5rem;margin-bottom:1rem;font-size:1rem;font-weight:400;line-height:1.7;letter-spacing:.04em}footer{margin:100px 0}
     #icon-button{display:flex;flex-grow:0;flex-shrink:0;flex-direction:column;gap:2px;align-items:center;justify-content:center;width:48px;height:48px;padding:0;margin:0;font-size:10px;color:#1a1a1c;text-decoration:none;cursor:pointer;background:none;border:none}
     #pageTop{position:fixed;right:24px;bottom:24px;z-index:10;display:flex;align-items:center;justify-content:center;width:56px;height:56px;color:#0028b5;cursor:pointer;background-color:#fff;border:1px solid #0028b5;border-radius:50%;transition:background-color 0.5s cubic-bezier(.4,.4,0,1);animation-name:fade_in;animation-duration:0.5s}
     #pageTop:hover{background-color:#e7eefd;border-color:#0f41af}#pageTop[hidden]{visibility:hidden;animation-name:fade_out;animation-duration:0.5s}
@@ -210,20 +210,18 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew }) {
   </footer>
 </body>
 </html>
-  `;
+    `;
 
     // Blob を作成して新しいタブで開く
     const blob = new Blob([htmlTemplate], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const newWindow = window.open(url, '_blank');
     if (newWindow) {
-        newWindow.focus(); // 新しいタブにフォーカス
-        // URL.revokeObjectURL(url); // 理論上は不要になったら解放すべきだが、タイミングが難しい。タブが閉じられるまで有効。
-                              // ブラウザがタブを閉じるときに自動的に解放することが期待される。
+        newWindow.focus();
     } else {
         alert('ポップアップブロックが有効になっている可能性があります。無効にしてから再度お試しください。');
     }
-    closeMenuDialog(); // 元のメニューダイアログを閉じる
+    closeMenuDialog();
   }, [title, blocks, closeMenuDialog]);
 
 
