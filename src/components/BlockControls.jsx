@@ -53,6 +53,7 @@ function BlockControls({
 						value={language || ''}
 						onChange={handleLanguageInputChange}
 						placeholder="例）java"
+            autoCapitalize='none'
 					/>
 				</div>
 			)}

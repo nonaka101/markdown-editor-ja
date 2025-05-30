@@ -342,10 +342,10 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew, onLoadJs
 				</svg>
 				メニュー
 			</button>
-			<dialog id='global-menu' className='menu-dialog'>
+			<dialog id='global-menu' className='menu-dialog' closedby="any" aria-labelledby='menu-title'>
 				<div className='menu-dialog-body'>
 					<div className='menu-dialog-header'>
-						<h2>メニュー</h2>
+						<h2 id='menu-title'>メニュー</h2>
 						<button
 							type="button"
 							className='icon-button'

@@ -29,9 +29,9 @@ const AddBlockDialog = forwardRef(({ onSelect }, ref) => {
 
 	// dialog 要素に ref を設定
 	return (
-		<dialog ref={ref}  className='block-dialog'>
+		<dialog ref={ref}  className='block-dialog' closedby="any">
 			<div className='block-dialog-body'>
-				<h2 className='block-dialog-title'>追加するブロックを選択</h2>
+				<h2 className='block-dialog-title' tabIndex={-1} autofocus="true">追加するブロックを選択</h2>
 				<ul className='block-dialog-list'>
 					{blockTypes.map(block => (
 						<li key={block.type} style={{ marginBottom: '8px' }}>
