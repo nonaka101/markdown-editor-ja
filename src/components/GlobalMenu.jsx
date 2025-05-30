@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 // ユーティリティ関数をインポート
 import { escapeHtml } from '../utils/htmlUtils';
 import { generatePreviewData } from '../utils/previewHelpers';
-import { saveJsonData } from '../utils/fileSaver';
+import { saveJsonData, sanitizeFilename } from '../utils/fileSaver';
 
 import './GlobalMenu.css';
 
@@ -128,7 +128,7 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew, onLoadJs
   // =====================================
 
   const fileInputRef = useRef(null); // JSONロード用のファイル入力
-  
+
   // --- JSONデータからロード ---
   const handleLoadJsonButtonClick = () => {
       fileInputRef.current?.click(); // ファイル選択ダイアログを開く
@@ -143,7 +143,7 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew, onLoadJs
       if (jsonDataString) {
           try {
               const parsedData = JSON.parse(jsonDataString);
-              const filenameTitle = parsedData.title ? parsedData.title.replace(/[^a-z0-9_-\s]/gi, '').replace(/\s+/g, '_') : 'Untitled';
+              const filenameTitle = parsedData.title ? sanitizeFilename(parsedData.title) : 'Untitled';
               saveJsonData(jsonDataString, `MDEja-${filenameTitle}`);
           } catch (error) {
               console.error("localStorage のJSONデータのパースに失敗:", error);
@@ -203,8 +203,8 @@ function GlobalMenu({ title, setTitle, blocks, onExport, onSave, onNew, onLoadJs
    */
   const handleOpenPreviewInNewPage = useCallback(() => {
 
-    const pageTitle = escapeHtml(title) || 'プレビュー';
-    const { elements: contentReactElements, tocEntries } = generatePreviewData(pageTitle, blocks);
+    const pageTitle = escapeHtml(sanitizeFilename(title)) || 'プレビュー';
+    const { elements: contentReactElements, tocEntries } = generatePreviewData(escapeHtml(title), blocks);
 
     // 目次HTMLの生成
     const navLinksHtml = tocEntries.map(entry =>
